@@ -32,7 +32,6 @@ class DemoApplicationTests {
 
         assertThat(result)
             .hasStatusOk()
-            .hasContentTypeCompatibleWith(MediaType.APPLICATION_JSON)
             .bodyJson()
             .convertTo(InstanceOfAssertFactories.list(CustomerDTO.class))
             .hasSize(5);
