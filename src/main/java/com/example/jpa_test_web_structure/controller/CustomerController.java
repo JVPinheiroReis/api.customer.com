@@ -1,12 +1,13 @@
 package com.example.jpa_test_web_structure.controller;
 
-import com.example.jpa_test_web_structure.domain.Customer;
+import com.example.jpa_test_web_structure.domain.CustomerDTO;
 import com.example.jpa_test_web_structure.service.CustomerService;
 import java.util.List;
-import java.util.Optional;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,20 +24,28 @@ public class CustomerController {
     }
 
     @GetMapping
-    public List<Customer> list(
+    public ResponseEntity<List<CustomerDTO>> list(
         @RequestParam(required = false) String firstName,
         @RequestParam(required = false) String lastName
     ) {
-        return service.listCustomers(firstName, lastName);
+        return ResponseEntity.ok(service.listCustomers(firstName, lastName));
     }
 
     @GetMapping("/{id}")
-    public Optional<Customer> get(@PathVariable Long id) {
-        return service.findCustomerById(id);
+    public ResponseEntity<CustomerDTO> get(@PathVariable Long id) {
+        return ResponseEntity.ok(service.findCustomerById(id));
     }
 
     @PostMapping
-    public void create(@RequestBody Customer customer) {
-        service.createCustomer(customer);
+    public ResponseEntity<CustomerDTO> create(@RequestBody CustomerDTO dto) {
+        return ResponseEntity.ok(service.createCustomer(dto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CustomerDTO> update(
+        @PathVariable Long id,
+        @RequestBody CustomerDTO dto
+    ) {
+        return ResponseEntity.ok(service.updateCustomer(id, dto));
     }
 }
